@@ -1,7 +1,7 @@
 import axios from 'axios'
 import {setUser} from "../reducers/userReducer";
 import {API_URL} from "../config";
-import { setUsers } from '../reducers/userListReducer';
+import { deleteUserAction, setUsers } from '../reducers/userListReducer';
 
 const axiosConfigToken = {
     headers: {
@@ -47,7 +47,7 @@ export const getUsers =  () => {
             const response = await axios.get(`${API_URL}/admin/users`, {
                 headers:{
                     Authorization:`Bearer_${localStorage.getItem('token')}`,
-                    'Access-Control-Allow-Origin':'*',
+                    'Access-Control-Allow-Origin':'http://localhost:3000',
                     'Content-Type': 'application/json;charset=UTF-8',
                 }
             })
@@ -66,15 +66,15 @@ export const deleteUser =  (userId) => {
             const response = await axios.delete(`${API_URL}/admin/users/${userId}`, {
                 headers:{
                     Authorization:`Bearer_${localStorage.getItem('token')}`,
-                    'Access-Control-Allow-Origin':'*',
+                    'Access-Control-Allow-Origin':'http://localhost:3000',
                     'Content-Type': 'application/json;charset=UTF-8',
                 }
             })
             console.log('user.js deleteUser: ');
-            console.log(response.data);
-            dispatch(setUsers(response.data));
+            dispatch(deleteUserAction(userId));
         } catch (e) {
             console.log(e)
+            alert(e.response);
         }
     }
 }
