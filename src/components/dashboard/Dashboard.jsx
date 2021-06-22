@@ -1,7 +1,7 @@
 import React from 'react';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import { getTest, getUsers } from "../../actions/user";
+import { getTest, getUsers, deleteUser } from "../../actions/user";
 
 
 const Dashboard = () => {
@@ -16,7 +16,7 @@ const Dashboard = () => {
 
         console.log("dashboard users from state: ");
         console.log(dashBoardUsers);
-    }, [])
+    }, [dashBoardUsers])
 
     function renderTableHeader() {
         console.log("dashboard users from render table header: ");
@@ -25,6 +25,10 @@ const Dashboard = () => {
         return header.map((key, index) => {
             return <th key={index}>{key.toUpperCase()}</th>
         })
+    }
+
+    function deleteUserElement(user_id) {
+        dispatch(deleteUser(user_id))
     }
 
     function renderUsersTable() {
@@ -50,7 +54,7 @@ const Dashboard = () => {
                     <td>{updated}</td>
                     {<td>{roles[0].name}</td>}
                     <td>{verificationTimesAsked}</td>
-                    <dt><button>Delete</button></dt>
+                    <dt><button className="btn btn-danger" onClick={() => deleteUserElement(id)}>Delete</button></dt>
                 </tr>
             )
         })
@@ -63,9 +67,9 @@ const Dashboard = () => {
                 <button type="button" className="btn-light btn btn-outline-primary" onClick={() => {
                     dispatch(getUsers());
                     // renderUsersTable();
-                }}>getUsers</button>
+                }}>load users</button>
             </div>
-
+                <div></div>
 
             <table id="usersTable" className="table table-bordered">
                 <tbody>

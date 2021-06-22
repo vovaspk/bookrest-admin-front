@@ -9,7 +9,8 @@ const defaultState =
 
 export default function userListReducer(state = [], action) {
     console.log('users list in userListReducer');
-    //here got action.payload only one object uesr {}
+    //make admins not shown, so admin cannot delete another admin
+
     console.log(action.payload);
     switch (action.type) {
         case SET_USERS:
@@ -17,7 +18,9 @@ export default function userListReducer(state = [], action) {
             return  [...action.payload]
                 // users: [action.payload, ...defaultState.users]
         case DELETE_USER:
-            return [...state.filter(user => user._id != action.payload)]
+            console.log('DELETE_USERS: ');
+            console.log(action.payload);
+            return [...state.filter(user => user.id != action.payload)]
         default:
             return state
     }

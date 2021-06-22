@@ -14,8 +14,6 @@ const Navbar = () => {
     const currentUser = useSelector(state => state.user.currentUser)
     const [users, setUsers] = useState([]);
     const dispatch = useDispatch()
-    const [searchName, setSearchName] = useState('')
-    const [searchTimeout, setSearchTimeout] = useState(false)
     //const avatar = currentUser.avatar ? `${API_URL + currentUser.avatar}` : avatarLogo
 
     useEffect(() => {
@@ -33,6 +31,7 @@ const Navbar = () => {
                 {/* {isAuth && <button className="btn btn-outline-success" onClick={}>Dashboard</button>} */}
                 {isAuth && <a className="nav-item nav-link" href="/dashboard">Dashboard</a>}
                 {!isAuth && <div className="navbar__login"><NavLink to="/login">Log in</NavLink></div>}
+                {isAuth && <div className="navbar-brand">{currentUser.username}</div>}
                 {isAuth && <button className="btn btn-outline-success" onClick={() => dispatch(logout())}>Log out</button>}
                
             </div>
