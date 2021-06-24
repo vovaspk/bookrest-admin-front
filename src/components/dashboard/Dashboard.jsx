@@ -1,8 +1,7 @@
 import React from 'react';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import { getTest, getUsers, deleteUser } from "../../actions/user";
-
+import { getUsers, deleteUser } from "../../actions/user";
 
 const Dashboard = () => {
     const isAuth = useSelector(state => state.user.isAuth);
@@ -28,7 +27,30 @@ const Dashboard = () => {
     }
 
     function deleteUserElement(user_id) {
-        dispatch(deleteUser(user_id))
+        //TODO make custom modal popup(css) delete user? instead of this confirm
+        var answer = window.confirm("Delete user with id: " + user_id + "?");
+        if (answer) {
+            dispatch(deleteUser(user_id))
+        }
+        else {
+
+        }
+        //dispatch(deleteUser(user_id))
+    }
+
+    const hasAdminRole = (roles) => {
+        for (let i = 0; i < roles.length; i++) {
+            // console.log('role');
+            // console.log(roles[i].name);
+            if (roles[i].name === "ROLE_ADMIN") {
+                // console.log('admin role?');
+                // console.log(roles[i].name);
+                return true;
+            }
+
+        }
+        return false;
+
     }
 
     function renderUsersTable() {
@@ -40,36 +62,40 @@ const Dashboard = () => {
         // console.log("dashBoardUsers.users values: ");
         // console.log(typeof (Object.values(dashBoardUsers.users)));
 
-        return dashBoardUsers.map((user, index) => {
-            const { created, email, firstName, id, lastName, roles, status, updated, username, verificationTimesAsked } = user //destructuring
-            return (
-                <tr key={index}>
-                    <td>{id}</td>
-                    <td>{username}</td>
-                    <td>{email}</td>
-                    <td>{firstName}</td>
-                    <td>{lastName}</td>
-                    <td>{status}</td>
-                    <td>{created}</td>
-                    <td>{updated}</td>
-                    {<td>{roles[0].name}</td>}
-                    <td>{verificationTimesAsked}</td>
-                    <dt><button className="btn btn-danger" onClick={() => deleteUserElement(id)}>Delete</button></dt>
-                </tr>
-            )
-        })
+        // console.log('testUsers: ');
+        // console.log(testUsers);
+
+        return dashBoardUsers
+            .map((user, index) => {
+                const { created, email, firstName, id, lastName, roles, status, updated, username, verificationTimesAsked } = user //destructuring
+                return (
+                    <tr key={index}>
+                        <td>{id}</td>
+                        <td>{username}</td>
+                        <td>{email}</td>
+                        <td>{firstName}</td>
+                        <td>{lastName}</td>
+                        <td>{status}</td>
+                        <td>{created}</td>
+                        <td>{updated}</td>
+                        <td>{roles.map(r => r.name.split("_").pop()) + ','.slice(0, -1)}</td>
+                        <td>{verificationTimesAsked}</td>
+                        <dt><button className="btn btn-danger" disabled={hasAdminRole(roles)} onClick={() => deleteUserElement(id)}>Delete</button></dt>
+                    </tr>
+                )
+            })
     }
 
     return (
         <div>
             <h1 className="text-center">Users Dashboard</h1>
-            <div className="text-center">
+            <div className="text-center" id="panel">
                 <button type="button" className="btn-light btn btn-outline-primary" onClick={() => {
                     dispatch(getUsers());
                     // renderUsersTable();
                 }}>load users</button>
             </div>
-                <div></div>
+            <div></div>
 
             <table id="usersTable" className="table table-bordered">
                 <tbody>
@@ -77,8 +103,6 @@ const Dashboard = () => {
                     {renderUsersTable()}
                 </tbody>
             </table>
-            {/* <button onClick={() => dispatch(getTest())}>test</button> */}
-            {/* <input accept="image/*" onChange={e => changeHandler(e)} type="file" placeholder="Загрузить аватар"/> */}
         </div>
     );
 };

@@ -6,7 +6,6 @@ import Login from "./authorization/Login";
 import {useDispatch, useSelector} from "react-redux";
 import {getUsers} from "../actions/user";
 import Dashboard from "./dashboard/Dashboard";
-// import Profile from "./profile/Profile";
 
 function App() {
     const isAuth = useSelector(state => state.user.isAuth)

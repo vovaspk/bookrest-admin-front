@@ -4,6 +4,7 @@ import '../authorization/login.css'
 import Input from "../../utils/input/Input";
 import { useDispatch } from "react-redux";
 import { login } from "../../actions/user";
+import logo from "../../logos/bookrest-login-logo.svg";
 
 const Login = () => {
     const [username, setUsername] = useState("")
@@ -15,7 +16,7 @@ const Login = () => {
         <div className='loginForm'>
             <main className='form-signin'>
                 <div className="text-center">
-                    {/* <img className="mb-4" src="public\bootstrap-logo.svg" alt="" width="72" height="57"></img> */}
+                    <img class="mb-4" alt="" width="72" height="57" src={logo}  ></img>
                     <div className="h3 mb-3 fw-normal">Sign in</div>
                     <div className="form-floating">
                         <Input value={username} setValue={setUsername} type="text" placeholder="Enter username..." />
