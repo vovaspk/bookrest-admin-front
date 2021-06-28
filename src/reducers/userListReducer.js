@@ -2,15 +2,12 @@ const SET_USERS = "SET_USERS";
 const DELETE_USER = "DELETE_USER";
 const VERIFY_USER = "VERIFY_USER";
 
-const defaultState =
-    [
-
-    ]
+const defaultState = [];
 
 
 export default function userListReducer(state = [], action) {
+    let usersArray = [...state];
     console.log('users list in userListReducer');
-
     console.log(action.payload);
     switch (action.type) {
         case SET_USERS:
@@ -31,7 +28,8 @@ export default function userListReducer(state = [], action) {
 
             //return [...state.filter(user => user.id != action.payload.id), action.payload] //doesnt update button after verification
 
-            return [...state.map(user => {return user.id === action.payload.id ? action.payload : user} )]// verifies, but need to reload to see verified, it's just disabled button after verification
+            //button is disabled, but green and text ACTIVE
+            return state.map(user => {return user.id === action.payload.id ? action.payload : user} )// verifies, but need to reload to see verified, it's just disabled button after verification
             
             // return [...state.filter(user => user.id != action.payload)]   THINK ABOUT HOW THIS SHOULD WORK
         default:

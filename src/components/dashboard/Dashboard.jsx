@@ -6,7 +6,6 @@ import '../dashboard/dashboard.css';
 import UserStatus from './UserStatus';
 
 const Dashboard = () => {
-    const isAuth = useSelector(state => state.user.isAuth);
     const dashBoardUsers = useSelector(state => state.users);
     const dispatch = useDispatch()
 
@@ -62,7 +61,7 @@ const Dashboard = () => {
         // console.log(typeof (Object.values(dashBoardUsers.users)));
 
         return dashBoardUsers
-        .sort(function(a, b) { return a.id > b.id ? 1 : -1})
+        .sort(function(a, b) { return a.id > b.id ? 1 : -1}) //sort by id
         .map((user, index) => {
                 const { created, email, firstName, id, lastName, roles, status, updated, username, verificationTimesAsked } = user //destructuring
                 return (
