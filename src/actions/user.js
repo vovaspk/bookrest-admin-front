@@ -13,7 +13,7 @@ const axiosConfigToken = {
 
 export const registration = async (username, password) => {
     try {
-        const response = await axios.post(`${API_URL}/auth/register`, {
+        const response = await axios.post(`${process.env.REACT_APP_API_URL}/auth/register`, {
             username,
             password
         })
@@ -26,7 +26,7 @@ export const registration = async (username, password) => {
 export const login = (username, password) => {
     return async dispatch => {
         try {
-            const response = await axios.post(`${API_URL}/auth/login`, {
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}/auth/login`, {
                 username,
                 password
             });
@@ -49,7 +49,7 @@ export const login = (username, password) => {
 export const getUsers = () => {
     return async dispatch => {
         try {
-            const response = await axios.get(`${API_URL}/admin/users`, {
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/admin/users`, {
                 headers: {
                     Authorization: `Bearer_${localStorage.getItem('token')}`,
                     'Access-Control-Allow-Origin': 'http://localhost:3000',
@@ -68,7 +68,7 @@ export const getUsers = () => {
 export const deleteUser = (userId) => {
     return async dispatch => {
         try {
-            const response = await axios.delete(`${API_URL}/admin/users/${userId}`, {
+            const response = await axios.delete(`${process.env.REACT_APP_API_URL}/admin/users/${userId}`, {
                 headers: {
                     Authorization: `Bearer_${localStorage.getItem('token')}`,
                     'Access-Control-Allow-Origin': 'http://localhost:3000',
@@ -87,7 +87,7 @@ export const deleteUser = (userId) => {
 export const verifyUser = (userId) => {
     return async dispatch => {
         try {
-            const response = await axios.post(`${API_URL}/admin/verify/users/${userId}`, {}, {
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}/admin/verify/users/${userId}`, {}, {
                 headers: {
                     Authorization: `Bearer_${localStorage.getItem('token')}`,
                     'Access-Control-Allow-Origin': 'http://localhost:3000',
@@ -96,7 +96,7 @@ export const verifyUser = (userId) => {
             })
             console.log('user.js verifyUser: ');
             console.log(response.data);
-            
+
             dispatch(verifyUserAction(response.data));//pass user object to reducer
         } catch (e) {
             console.log(e)
@@ -108,7 +108,7 @@ export const verifyUser = (userId) => {
 export const getTest = () => {
     return async dispatch => {
         try {
-            const response = await axios.get(`${API_URL}/auth/test`,
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/auth/test`,
                 {
                     headers: {
                         Authorization: `Bearer_${localStorage.getItem('token')}`,
