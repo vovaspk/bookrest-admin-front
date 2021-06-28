@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { setUser } from "../reducers/userReducer";
 import { API_URL } from "../config";
-import { deleteUserAction, setUsers } from '../reducers/userListReducer';
+import { deleteUserAction, setUsers, verifyUserAction } from '../reducers/userListReducer';
 
 const axiosConfigToken = {
     headers: {
@@ -80,6 +80,27 @@ export const deleteUser = (userId) => {
         } catch (e) {
             console.log(e)
             alert(e.response);
+        }
+    }
+}
+
+export const verifyUser = (userId) => {
+    return async dispatch => {
+        try {
+            const response = await axios.post(`${API_URL}/admin/verify/users/${userId}`, {}, {
+                headers: {
+                    Authorization: `Bearer_${localStorage.getItem('token')}`,
+                    'Access-Control-Allow-Origin': 'http://localhost:3000',
+                    'Content-Type': 'application/json;charset=UTF-8',
+                }
+            })
+            console.log('user.js verifyUser: ');
+            console.log(response.data);
+            
+            dispatch(verifyUserAction(response.data));//pass user object to reducer
+        } catch (e) {
+            console.log(e)
+            alert(e.response.errorMessage);
         }
     }
 }

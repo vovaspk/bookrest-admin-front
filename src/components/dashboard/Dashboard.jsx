@@ -1,7 +1,9 @@
 import React from 'react';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import { getUsers, deleteUser } from "../../actions/user";
+import { getUsers, deleteUser, verifyUser } from "../../actions/user";
+import '../dashboard/dashboard.css';
+import UserStatus from './UserStatus';
 
 const Dashboard = () => {
     const isAuth = useSelector(state => state.user.isAuth);
@@ -11,6 +13,10 @@ const Dashboard = () => {
     useEffect(() => {
 
         dispatch(getUsers);
+
+        // if (typeof dashBoardUsers !== 'undefined' && dashBoardUsers.length > 0) {
+        //     renderUsersTable();
+        // }
 
 
         console.log("dashboard users from state: ");
@@ -33,40 +39,31 @@ const Dashboard = () => {
             dispatch(deleteUser(user_id))
         }
         else {
-
         }
-        //dispatch(deleteUser(user_id))
     }
 
     const hasAdminRole = (roles) => {
         for (let i = 0; i < roles.length; i++) {
-            // console.log('role');
-            // console.log(roles[i].name);
             if (roles[i].name === "ROLE_ADMIN") {
-                // console.log('admin role?');
-                // console.log(roles[i].name);
                 return true;
             }
-
         }
         return false;
-
     }
+
 
     function renderUsersTable() {
         dispatch(getUsers)
-        console.log("printing dashboard object in renderMethod Dashboard component:");
+        console.log("renderUserTable: dashboard object in renderMethod Dashboard component:");
         console.log(dashBoardUsers);
         // console.log("printing type of dashBoardUsers.users: ");
         // console.log(typeof (dashBoardUsers.users));
         // console.log("dashBoardUsers.users values: ");
         // console.log(typeof (Object.values(dashBoardUsers.users)));
 
-        // console.log('testUsers: ');
-        // console.log(testUsers);
-
         return dashBoardUsers
-            .map((user, index) => {
+        .sort(function(a, b) { return a.id > b.id ? 1 : -1})
+        .map((user, index) => {
                 const { created, email, firstName, id, lastName, roles, status, updated, username, verificationTimesAsked } = user //destructuring
                 return (
                     <tr key={index}>
@@ -75,19 +72,20 @@ const Dashboard = () => {
                         <td>{email}</td>
                         <td>{firstName}</td>
                         <td>{lastName}</td>
-                        <td>{status}</td>
+                        {/* <td>{handleStatus(user)}</td> */}
+                        <td><UserStatus user={user}/></td>
                         <td>{created}</td>
                         <td>{updated}</td>
                         <td>{roles.map(r => r.name.split("_").pop()) + ','.slice(0, -1)}</td>
                         <td>{verificationTimesAsked}</td>
-                        <dt><button className="btn btn-danger" disabled={hasAdminRole(roles)} onClick={() => deleteUserElement(id)}>Delete</button></dt>
+                        <td><button className="btn btn-danger" disabled={hasAdminRole(roles)} onClick={() => deleteUserElement(id)}>Delete</button></td>
                     </tr>
                 )
             })
     }
 
     return (
-        <div>
+        <div style={{ marginLeft: '10px', marginRight: '10px' }}>
             <h1 className="text-center">Users Dashboard</h1>
             <div className="text-center" id="panel">
                 <button type="button" className="btn-light btn btn-outline-primary" onClick={() => {
@@ -97,7 +95,7 @@ const Dashboard = () => {
             </div>
             <div></div>
 
-            <table id="usersTable" className="table table-bordered">
+            <table id="usersTable" className="table table-bordered" style={{ marginTop: '15px' }}>
                 <tbody>
                     <tr>{renderTableHeader()}</tr>
                     {renderUsersTable()}

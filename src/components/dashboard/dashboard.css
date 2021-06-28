@@ -1,0 +1,13 @@
+.greenStatusButton {
+    background-color: #cdf5dd;
+    border-radius : 5px;
+    border:none;
+    color:#4fa77d
+}
+
+.blueStatusButton {
+    background-color: #e1edff;
+    border-radius: 5px;
+    color: #607ac4;
+    border:none;
+}
